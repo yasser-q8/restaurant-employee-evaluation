@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج تقييم موظفي المطاعم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #d4a762 0%, #b8860b 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .form-container {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            color: #b8860b;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #d4a762;
+            outline: none;
+        }
+        
+        .rating-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            gap: 10px;
+        }
+        
+        .rating-option {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .rating-option:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .rating-option.selected {
+            background-color: #e8f4ff;
+            border-color: #b8860b;
+            color: #b8860b;
+            font-weight: bold;
+        }
+        
+        .rating-option i {
+            font-size: 24px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #d4a762 0%, #b8860b 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 30px auto 0;
+            font-weight: bold;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(184, 134, 11, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .status-message {
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .rating-container {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-utensils"></i> تقييم أداء موظفي المطاعم</h1>
+            <p>نموذج لتقييم أداء الموظفين لتحسين جودة الخدمة</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="evaluationForm">
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-user"></i> معلومات الموظف
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="employeeName">اسم الموظف *</label>
+                        <input type="text" id="employeeName" name="employeeName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="employeePosition">الوظيفة *</label>
+                        <select id="employeePosition" name="employeePosition" required>
+                            <option value="">اختر الوظيفة</option>
+                            <option value="نادل">نادل</option>
+                            <option value="شيف">شيف</option>
+                            <option value="مساعد شيف">مساعد شيف</option>
+                            <option value="مشرف">مشرف</option>
+                            <option value="مضيف">مضيف</option>
+                            <option value="عامل نظافة">عامل نظافة</option>
+                            <option value="مدير">مدير</option>
+                            <option value="آخرى">آخرى</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="evaluatorName">اسم المقيم *</label>
+                        <input type="text" id="evaluatorName" name="evaluatorName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="evaluationDate">تاريخ التقييم *</label>
+                        <input type="date" id="evaluationDate" name="evaluationDate" required>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-star"></i> معايير التقييم
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>المظهر الشخصي والنظافة *</label>
+                        <div class="rating-container">
+                            <div class="rating-option" data-value="ممتاز">
+                                <i class="fas fa-laugh-beam"></i>
+                                ممتاز
+                            </div>
+                            <div class="rating-option" data-value="جيد جدا">
+                                <i class="fas fa-smile"></i>
+                                جيد جدا
+                            </div>
+                            <div class="rating-option" data-value="جيد">
+                                <i class="fas fa-meh"></i>
+                                جيد
+                            </div>
+                            <div class="rating-option" data-value="مقبول">
+                                <i class="fas fa-frown"></i>
+                                مقبول
+                            </div>
+                            <div class="rating-option" data-value="ضعيف">
+                                <i class="fas fa-angry"></i>
+                                ضعيف
+                            </div>
+                        </div>
+                        <input type="hidden" id="appearanceRating" name="appearanceRating" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>السلوك والتعامل مع العملاء *</label>
+                        <div class="rating-container">
+                            <div class="rating-option" data-value="ممتاز">
+                                <i class="fas fa-laugh-beam"></i>
+                                ممتاز
+                            </div>
+                            <div class="rating-option" data-value="جيد جدا">
+                                <i class="fas fa-smile"></i>
+                                جيد جدا
+                            </div>
+                            <div class="rating-option" data-value="جيد">
+                                <i class="fas fa-meh"></i>
+                                جيد
+                            </div>
+                            <div class="rating-option" data-value="مقبول">
+                                <i class="fas fa-frown"></i>
+                                مقبول
+                            </div>
+                            <div class="rating-option" data-value="ضعيف">
+                                <i class="fas fa-angry"></i>
+                                ضعيف
+                            </div>
+                        </div>
+                        <input type="hidden" id="behaviorRating" name="behaviorRating" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>الدقة في العمل وإنجاز المهام *</label>
+                        <div class="rating-container">
+                            <div class="rating-option" data-value="ممتاز">
+                                <i class="fas fa-laugh-beam"></i>
+                                ممتاز
+                            </div>
+                            <div class="rating-option" data-value="جيد جدا">
+                                <i class="fas fa-smile"></i>
+                                جيد جدا
+                            </div>
+                            <div class="rating-option" data-value="جيد">
+                                <i class="fas fa-meh"></i>
+                                جيد
+                            </div>
+                            <div class="rating-option" data-value="مقبول">
+                                <i class="fas fa-frown"></i>
+                                مقبول
+                            </div>
+                            <div class="rating-option" data-value="ضعيف">
+                                <i class="fas fa-angry"></i>
+                                ضعيف
+                            </div>
+                        </div>
+                        <input type="hidden" id="accuracyRating" name="accuracyRating" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>العمل الجماعي والتعاون مع الزملاء *</label>
+                        <div class="rating-container">
+                            <div class="rating-option" data-value="ممتاز">
+                                <i class="fas fa-laugh-beam"></i>
+                                ممتاز
+                            </div>
+                            <div class="rating-option" data-value="جيد جدا">
+                                <i class="fas fa-smile"></i>
+                                جيد جدا
+                            </div>
+                            <div class="rating-option" data-value="جيد">
+                                <i class="fas fa-meh"></i>
+                                جيد
+                            </div>
+                            <div class="rating-option" data-value="مقبول">
+                                <i class="fas fa-frown"></i>
+                                مقبول
+                            </div>
+                            <div class="rating-option" data-value="ضعيف">
+                                <i class="fas fa-angry"></i>
+                                ضعيف
+                            </div>
+                        </div>
+                        <input type="hidden" id="teamworkRating" name="teamworkRating" required>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-comment-dots"></i> تعليقات إضافية
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="strengths">نقاط القوة</label>
+                        <textarea id="strengths" name="strengths" rows="3" placeholder="ما هي نقاط القوة لدى الموظف؟"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="improvements">مجالات التحسين</label>
+                        <textarea id="improvements" name="improvements" rows="3" placeholder="ما هي المجالات التي يمكن للموظف تحسينها؟"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="additionalComments">ملاحظات إضافية</label>
+                        <textarea id="additionalComments" name="additionalComments" rows="3" placeholder="أي ملاحظات إضافية تود إضافتها؟"></textarea>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> إرسال التقييم
+                </button>
+                
+                <div id="statusMessage" class="status-message"></div>
+            </form>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 نظام تقييم موظفي المطاعم | جميع الحقوق محفوظة</p>
+            <p>يتم حفظ البيانات تلقائياً في قاعدة البيانات</p>
+        </div>
+    </div>
+
+    <script>
+        // تعيين تاريخ اليوم كتاريخ افتراضي
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('evaluationDate').value = today;
+            
+            // إضافة تفاعل لتقييمات النقاط
+            const ratingOptions = document.querySelectorAll('.rating-option');
+            ratingOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const container = this.parentElement;
+                    const hiddenInput = container.nextElementSibling;
+                    
+                    // إزالة التحديد من جميع الخيارات
+                    container.querySelectorAll('.rating-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // تحديد الخيار المختار
+                    this.classList.add('selected');
+                    
+                    // تعيين القيمة في الحقل المخفي
+                    hiddenInput.value = this.getAttribute('data-value');
+                });
+            });
+            
+            // التعامل مع إرسال النموذج
+            const form = document.getElementById('evaluationForm');
+            form.addEventListener('submit', handleFormSubmit);
+        });
+        
+        // دالة إرسال النموذج إلى Google Sheets
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // التحقق من اختيار جميع التقييمات
+            const requiredRatings = ['appearanceRating', 'behaviorRating', 'accuracyRating', 'teamworkRating'];
+            let allRatingsSelected = true;
+            
+            requiredRatings.forEach(ratingId => {
+                const ratingValue = document.getElementById(ratingId).value;
+                if (!ratingValue) {
+                    allRatingsSelected = false;
+                    // إضافة تلميح للمستخدم
+                    const ratingContainer = document.getElementById(ratingId).previousElementSibling.previousElementSibling;
+                    ratingContainer.style.border = "1px solid red";
+                    ratingContainer.style.padding = "5px";
+                    ratingContainer.style.borderRadius = "5px";
+                }
+            });
+            
+            if (!allRatingsSelected) {
+                showStatusMessage('يرجى تقييم جميع المعايير المطلوبة', 'error');
+                return;
+            }
+            
+            // جمع بيانات النموذج
+            const formData = {
+                employeeName: document.getElementById('employeeName').value,
+                employeePosition: document.getElementById('employeePosition').value,
+                evaluatorName: document.getElementById('evaluatorName').value,
+                evaluationDate: document.getElementById('evaluationDate').value,
+                appearanceRating: document.getElementById('appearanceRating').value,
+                behaviorRating: document.getElementById('behaviorRating').value,
+                accuracyRating: document.getElementById('accuracyRating').value,
+                teamworkRating: document.getElementById('teamworkRating').value,
+                strengths: document.getElementById('strengths').value,
+                improvements: document.getElementById('improvements').value,
+                additionalComments: document.getElementById('additionalComments').value,
+                submissionTime: new Date().toLocaleString('ar-SA')
+            };
+            
+            // إرسال البيانات إلى Google Apps Script
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            
+            try {
+                // استبدل هذا المعرف بمعرف Google Apps Script الخاص بك
+                const scriptURL = 'https://script.google.com/macros/s/AKfycby9R0xkBgGnTzYpPGXU6IYdeSx9YQf1ppIX8ZPrOtmkQNOMo2V88clUNyU8JgOYXQNW/exec';
+                
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                // في حالة no-cors، لا يمكننا قراءة الاستجابة، لكننا نفترض النجاح
+                showStatusMessage('تم إرسال التقييم بنجاح!', 'success');
+                form.reset();
+                
+                // إعادة تعيين تاريخ اليوم
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('evaluationDate').value = today;
+                
+                // إعادة تعيين التقييمات
+                document.querySelectorAll('.rating-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                document.querySelectorAll('input[type="hidden"]').forEach(input => {
+                    input.value = '';
+                });
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showStatusMessage('حدث خطأ أثناء إرسال التقييم. يرجى المحاولة مرة أخرى.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال التقييم';
+            }
+        }
+        
+        // دالة لعرض رسالة الحالة
+        function showStatusMessage(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-message ' + type;
+            
+            // إخفاء الرسالة بعد 5 ثوانٍ
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
